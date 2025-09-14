@@ -13,6 +13,7 @@ public class Habitacion {
 
     private String titulo;
     private String ciudad;
+    private String direccion;
     private BigDecimal precioMensual;
     private String descripcion;
 
@@ -50,6 +51,15 @@ public class Habitacion {
     public void setCiudad(String ciudad) {
         this.ciudad = ciudad;
     }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
 
     public BigDecimal getPrecioMensual() {
         return precioMensual;
@@ -90,4 +100,5 @@ public class Habitacion {
     public void setReservas(List<Reserva> reservas) {
         this.reservas = reservas;
     }
+    
 }

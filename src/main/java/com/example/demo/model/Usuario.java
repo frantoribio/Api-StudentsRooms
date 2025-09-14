@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-
 import java.util.*;
 
 @Entity
@@ -23,8 +22,6 @@ public class Usuario {
 
     @OneToMany(mappedBy = "alumno")
     private List<Reserva> reservasRealizadas = new ArrayList<>();
-
-    // Getters y setters
 
     public UUID getId() {
         return id;
@@ -81,4 +78,5 @@ public class Usuario {
     public void setReservasRealizadas(List<Reserva> reservasRealizadas) {
         this.reservasRealizadas = reservasRealizadas;
     }
+    
 }

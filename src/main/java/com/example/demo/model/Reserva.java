@@ -21,8 +21,6 @@ public class Reserva {
     private LocalDate fechaFin;
     private String estado;
 
-    // Getters y setters
-
     public UUID getId() {
         return id;
     }
@@ -70,5 +68,5 @@ public class Reserva {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+    
 }
-
