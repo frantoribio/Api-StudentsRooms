@@ -1,6 +1,6 @@
 # Sistema de Alquiler de Habitaciones
 
-Aplicación full-stack para la gestión de alquiler de habitaciones, con soporte para roles de **alumno** y **propietario**, accesible desde web, móvil y escritorio.
+Aplicación full-stack para la gestión de alquiler de habitaciones, con soporte para roles de **alumno** y **propietario**, accesible desde móvil, escritorio y web.
 
 ## 🧱 Tecnologías
 
