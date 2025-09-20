@@ -19,7 +19,10 @@ public class Reserva {
 
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
-    private String estado;
+    
+    @Enumerated(EnumType.STRING)
+    private EstadoReserva estadoReserva;
+    
 
     public UUID getId() {
         return id;
@@ -61,12 +64,12 @@ public class Reserva {
         this.fechaFin = fechaFin;
     }
 
-    public String getEstado() {
-        return estado;
+    public EstadoReserva geEstadoReserva() {
+        return estadoReserva;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setEstadoReserva(EstadoReserva estadoReserva) {
+        this.estadoReserva = estadoReserva;
     }
     
 }

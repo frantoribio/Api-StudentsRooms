@@ -7,8 +7,6 @@ import org.springframework.http.ResponseEntity;
 import com.example.demo.model.Habitacion;
 import com.example.demo.service.HabitacionService;
 
-
-
 @RestController
 @RequestMapping("/api/habitaciones")
 public class HabitacionController {
@@ -16,9 +14,10 @@ public class HabitacionController {
     @Autowired
     private HabitacionService habitacionService;
 
-    @GetMapping
+    
+    @GetMapping 
     public List<Habitacion> getAllHabitaciones() {
-        return habitacionService.findAll();
+        return habitacionService.findAll();      
     }
 
     @GetMapping("/{id}")
@@ -42,6 +41,8 @@ public class HabitacionController {
             updatedHabitacion.setPrecioMensual(habitacionDetails.getPrecioMensual());
             updatedHabitacion.setCiudad(habitacionDetails.getCiudad());
             updatedHabitacion.setPropietario(habitacionDetails.getPropietario());
+            updatedHabitacion.setImagenesUrl(habitacionDetails.getImagenesUrl());
+            updatedHabitacion.setDireccion(habitacionDetails.getDireccion());
             return ResponseEntity.ok(habitacionService.save(updatedHabitacion));
         } else {
             return ResponseEntity.notFound().build();
