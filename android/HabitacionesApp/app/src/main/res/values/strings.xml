@@ -2,7 +2,7 @@
     <string name="app_name">HabitacionesApp</string>
     <string name="precio">Precio</string>
     <string name="ciudad">Ciudad</string>
-    <string name="descripci_n">Descripción</string>
-    <string name="t_tulo">Título</string>
+    <string name="descripcion">Descripción</string>
+    <string name="titulo">Título</string>
     <string name="precio_mes">Precio/mes</string>
 </resources>
