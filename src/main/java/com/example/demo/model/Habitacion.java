@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.*;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+//import javax.validation.constraints.Min;
+//import javax.validation.constraints.NotBlank;
+//import javax.validation.constraints.NotNull;
 
 @Entity
 public class Habitacion {
@@ -15,20 +15,20 @@ public class Habitacion {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotBlank(message = "No puede estar vacío")
+    //@NotBlank(message = "No puede estar vacío")
     private String titulo;
     
-    @NotBlank(message = "No puede estar vacío")
+    //@NotBlank(message = "No puede estar vacío")
     private String ciudad;
 
-    @NotBlank(message = "No puede estar vacío")
+    //@NotBlank(message = "No puede estar vacío")
     private String direccion;
 
-    @NotNull(message = "El precio no puede ser nulo")
-    @Min(value = 0, message = "El precio no puede ser negativo")
+    //@NotNull(message = "El precio no puede ser nulo")
+    //@Min(value = 0, message = "El precio no puede ser negativo")
     private BigDecimal precioMensual;
     
-    @NotBlank(message = "No puede estar vacío")
+    //@NotBlank(message = "No puede estar vacío")
     private String descripcion;
 
     @ElementCollection
