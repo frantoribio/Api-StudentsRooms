@@ -2,10 +2,13 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.util.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Entity
-public class Usuario {
+public class Usuario implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -79,5 +82,41 @@ public class Usuario {
     public void setReservasRealizadas(List<Reserva> reservasRealizadas) {
         this.reservasRealizadas = reservasRealizadas;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + rol.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return contraseña;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }                       
+    
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+    
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+    
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
 }
