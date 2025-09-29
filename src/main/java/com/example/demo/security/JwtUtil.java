@@ -3,6 +3,7 @@ package com.example.demo.security;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.security.Key;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
-import java.security.Key;
+
 
 @Component
 public class JwtUtil {
@@ -61,50 +62,3 @@ public class JwtUtil {
         return expiration.before(new Date());
     }
 }
-
-/* 
-import java.util.Date;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;  
-
-@Component
-public class JwtUtil {
-
-    private final String SECRET_KEY = "clave-secreta-super-segura";
-
-    public String generarToken(String email) {
-        return Jwts.builder()
-            .setSubject(email)
-            .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 día
-            .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()), SignatureAlgorithm.HS512)
-            .compact();
-    }
-
-    public String extraerEmail(String token) {
-        return Jwts.parserBuilder()
-            .setSigningKey()
-            .build()
-            .parseClaimsJws(token)
-            .getBody()
-            .getSubject();
-    }
-
-    public boolean validarToken(String token, UserDetails userDetails) {
-        String email = extraerEmail(token);
-        return email.equals(userDetails.getUsername()) && !estaExpirado(token);
-    }
-
-    private boolean estaExpirado(String token) {
-        Date expiration = Jwts.parser()
-            .setSigningKey(SECRET_KEY)
-            .parseClaimsJws(token)
-            .getBody()
-            .getExpiration();
-        return expiration.before(new Date());
-    }
-}
-*/
