@@ -12,13 +12,13 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class SeguridadConfig {
+public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/swagger-ui/**", "/api/**").hasRole("ADMIN")
+                .requestMatchers("/swagger-ui/**", "/api/**","/auth/login/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .httpBasic(org.springframework.security.config.Customizer.withDefaults())
