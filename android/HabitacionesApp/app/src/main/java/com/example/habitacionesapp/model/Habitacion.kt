@@ -1,4 +1,5 @@
-package com.example.habitacionesapp
+package com.example.habitacionesapp.model
+
 data class Habitacion(
     val id: String? = null,
     val titulo: String? = null,
