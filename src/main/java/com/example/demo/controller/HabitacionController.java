@@ -4,6 +4,8 @@ import java.util.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+
 import com.example.demo.model.Habitacion;
 import com.example.demo.service.HabitacionService;
 
@@ -27,6 +29,7 @@ public class HabitacionController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN', 'PROPIETARIO')")
     public Habitacion createHabitacion(@RequestBody Habitacion habitacion) {
         return habitacionService.save(habitacion);
     }
