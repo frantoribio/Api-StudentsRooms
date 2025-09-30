@@ -1,6 +1,9 @@
 package com.example.demo.controller;
 
-import javax.naming.AuthenticationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.AuthRequest;
 import com.example.demo.dto.AuthResponse;
 import com.example.demo.security.JwtUtil;
-
 
 @RestController
 @RequestMapping("/auth")
@@ -26,15 +28,16 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthRequest request) throws AuthenticationException {
-        org.springframework.security.core.Authentication auth = authManager.authenticate(
+    public ResponseEntity<?> login(@Validated @RequestBody AuthRequest request) {
+        try {
+            Authentication auth = authManager.authenticate(
             new UsernamePasswordAuthenticationToken(request.getEmail(), request.getContraseña())
-        );
+            );
 
-        String token = jwtUtil.generarToken(request.getEmail());
-        return ResponseEntity.ok(new AuthResponse(token));
+            String token = jwtUtil.generarToken(auth.getName());
+            return ResponseEntity.ok(new AuthResponse(token));
+        } catch (AuthenticationException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
+        }
     }
 }
-
-
-

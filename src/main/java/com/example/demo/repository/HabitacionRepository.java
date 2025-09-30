@@ -7,6 +7,3 @@ import java.util.UUID;
 public interface HabitacionRepository extends JpaRepository<Habitacion, UUID> {
     // Agregar métodos personalizados aquí si es necesario
 }
-
-    
-

@@ -6,7 +6,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
 @Entity
 public class Usuario implements UserDetails{
 
@@ -98,8 +97,7 @@ public class Usuario implements UserDetails{
 
     @Override
     public String getUsername() {
-        return email;
-    
+        return email;   
     }
 
     @Override
@@ -121,5 +119,4 @@ public class Usuario implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
-
 }
