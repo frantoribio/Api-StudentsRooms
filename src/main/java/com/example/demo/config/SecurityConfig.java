@@ -18,7 +18,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/swagger-ui/**", "/api/**","/auth/login/**").hasRole("ADMIN")
+                .requestMatchers("/auth/login").permitAll()
                 .anyRequest().authenticated()
             )
             .httpBasic(org.springframework.security.config.Customizer.withDefaults())
