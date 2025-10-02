@@ -1,6 +1,6 @@
 package com.example.habitacionesapp
 
-import android.content.Intent
+//import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
@@ -43,14 +43,14 @@ class MainActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8080") // Para localhost desde emulador
+            .baseUrl("http://10.0.2.2:8080/") // Para localhost desde emulador
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val authApi = retrofit.create(AuthApiService::class.java)
 
         api = retrofit.create(ApiService::class.java)
         val habitacionId = "793cd0c5-b345-4e30-930b-a7b9ad603f42"
-        val token = "Bearer token"
+        //val token = "Bearer token"
 
         lifecycleScope.launch {
             try {
@@ -64,21 +64,23 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 val tokenResponse = response.token
-                Log.d("JWT", "Token recibido: $token")
+                Log.d("JWT", "Token recibido: $tokenResponse")
 
                 // Guardar el token en SharedPreferences
                 val prefs = getSharedPreferences("auth", MODE_PRIVATE)
-                prefs.edit { putString("jwt_token", tokenResponse) }
-
+                if (!tokenResponse.isNullOrBlank()) {
+                    prefs.edit { putString("jwt_token", tokenResponse) }
+                }
                 //Toast.makeText(this@LoginActivity, "Login exitoso", Toast.LENGTH_LONG).show()
 
                 // Navegar a la siguiente pantalla
                 //startActivity(Intent(this@LoginActivity, MainActivity::class.java))
 
-                val token = prefs.getString("jwt_token", "") ?: ""
+
+
 
                 val habitacion = withContext(Dispatchers.IO) {
-                    api.getHabitacion(habitacionId, "Bearer $token")
+                    api.getHabitacion(habitacionId, "Bearer $tokenResponse")
                 }
 
                 tvTitulo.text = habitacion.titulo

@@ -20,5 +20,6 @@ public class AuthRequest {
     
     public void setContraseña(String contraseña) { 
         this.contraseña = contraseña; 
-    }            
+    }
+                
 }

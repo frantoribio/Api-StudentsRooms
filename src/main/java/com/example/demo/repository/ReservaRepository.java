@@ -6,4 +6,5 @@ import java.util.UUID;
 
 public interface ReservaRepository extends JpaRepository<Reserva, UUID> {
     // Agregar métodos personalizados aquí si es necesario
+    
 }

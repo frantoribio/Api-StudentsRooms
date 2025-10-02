@@ -25,4 +25,5 @@ public class JwtConfig {
     public void setExpiration(long expiration) {
         this.expiration = expiration;
     }
+    
 }

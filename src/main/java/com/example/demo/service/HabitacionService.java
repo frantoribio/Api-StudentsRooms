@@ -29,4 +29,5 @@ public class HabitacionService {
     public void deleteById(UUID id) {
         habitacionRepository.deleteById(id);
     }
+    
 }

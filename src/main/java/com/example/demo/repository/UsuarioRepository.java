@@ -7,4 +7,5 @@ import com.example.demo.model.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
     Optional<Usuario> findByEmail(String email);
+    
 } 

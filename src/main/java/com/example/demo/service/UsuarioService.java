@@ -39,5 +39,6 @@ public class UsuarioService {
 
      public Optional<Usuario> findById(UUID id) {
         return usuarioRepository.findById(id);
-    }  
+    }
+      
 }

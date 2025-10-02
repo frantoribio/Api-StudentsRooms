@@ -9,5 +9,6 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(@org.springframework.lang.NonNull CorsRegistry registry) { 
         registry.addMapping("/**").allowedOrigins("*"); 
-    } 
+    }
+     
 }
