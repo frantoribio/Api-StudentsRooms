@@ -46,6 +46,8 @@ public class HabitacionController {
             updatedHabitacion.setPropietario(habitacionDetails.getPropietario());
             updatedHabitacion.setImagenesUrl(habitacionDetails.getImagenesUrl());
             updatedHabitacion.setDireccion(habitacionDetails.getDireccion());
+            updatedHabitacion.setReservas(habitacionDetails.getReservas());
+            
             return ResponseEntity.ok(habitacionService.save(updatedHabitacion));
         } else {
             return ResponseEntity.notFound().build();

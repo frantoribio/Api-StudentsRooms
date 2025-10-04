@@ -64,7 +64,7 @@ public class Reserva {
         this.fechaFin = fechaFin;
     }
 
-    public EstadoReserva geEstadoReserva() {
+    public EstadoReserva getEstadoReserva() {
         return estadoReserva;
     }
 
