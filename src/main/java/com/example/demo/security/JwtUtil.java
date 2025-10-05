@@ -1,7 +1,11 @@
 package com.example.demo.security;
 
+
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,10 +46,15 @@ public class JwtUtil {
         }
     }
 
-    public String generarToken(String email) {
+    public String generarToken(Authentication auth) {
+        String rol = auth.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.joining(","));
         long now = System.currentTimeMillis();
+        
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(auth.getName())
+                .claim("rol", rol)
                 .setIssuedAt(new java.util.Date(now))
                 .setExpiration(new java.util.Date(now + expirationMs))
                 .signWith(io.jsonwebtoken.security.Keys.hmacShaKeyFor(secretKey.getBytes()))
@@ -75,6 +84,17 @@ public class JwtUtil {
             .getBody()
             .getExpiration();
         return expiration.before(new java.util.Date());
+    }
+
+    public String extraerRol(String token) {
+        // Implement logic to extract role from JWT token if stored in claims
+        // Example using io.jsonwebtoken.Jwts:
+        return (String) Jwts.parserBuilder()
+            .setSigningKey(io.jsonwebtoken.security.Keys.hmacShaKeyFor(secretKey.getBytes()))
+            .build()
+            .parseClaimsJws(token)
+            .getBody()
+            .get("rol");
     }
 
 }

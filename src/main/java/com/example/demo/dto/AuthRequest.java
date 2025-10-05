@@ -4,6 +4,13 @@ public class AuthRequest {
     
     private String email;
     private String contraseña;
+    private String rol;
+
+    public AuthRequest(String email, String contraseña, String rol) {
+        this.email = email;
+        this.contraseña = contraseña;
+        this.rol = rol;
+    }
     
     
     public String getEmail() {
@@ -21,5 +28,9 @@ public class AuthRequest {
     public void setContraseña(String contraseña) { 
         this.contraseña = contraseña; 
     }
+
+    public String getRol() {
+        return rol;
+    } 
                 
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.AuthRequest;
 import com.example.demo.dto.AuthResponse;
+import com.example.demo.model.Usuario;
 import com.example.demo.security.JwtUtil;
 
 @RestController
@@ -34,8 +35,15 @@ public class AuthController {
             new UsernamePasswordAuthenticationToken(request.getEmail(), request.getContraseña())
             );
 
-            String token = jwtUtil.generarToken(auth.getName());
-            return ResponseEntity.ok(new AuthResponse(token));
+            Usuario usuario = (Usuario) auth.getPrincipal();
+            String token = jwtUtil.generarToken(auth);
+            String rol = usuario.getRol() != null ? usuario.getRol().name() : null;
+            
+            AuthResponse response = new AuthResponse(request.getEmail(), token, rol);
+            
+            return ResponseEntity.ok(response);
+
+            //return ResponseEntity.ok(new AuthResponse(token));
         } catch (AuthenticationException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
         }

@@ -22,6 +22,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/auth/login").permitAll()
+                .requestMatchers("/api/habitaciones").permitAll()
                 .anyRequest().authenticated()
             )
             .csrf(csrf -> csrf.disable())
@@ -40,4 +41,5 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+
 }

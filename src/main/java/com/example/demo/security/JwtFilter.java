@@ -37,6 +37,11 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
+        if (path.equals("/api/habitaciones")) {
+            filterChain.doFilter(request, response);
+            return;
+        }   
+
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
