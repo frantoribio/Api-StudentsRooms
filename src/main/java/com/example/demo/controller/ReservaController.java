@@ -52,8 +52,8 @@ public class ReservaController {
             updatedReserva.setFechaFin(reservaDetails.getFechaFin());
             updatedReserva.setEstadoReserva(reservaDetails.getEstadoReserva());
             
-
             return ResponseEntity.ok(reservaService.save(updatedReserva));
+            
         } else {
             return ResponseEntity.notFound().build();
         }

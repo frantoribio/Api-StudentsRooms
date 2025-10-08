@@ -5,9 +5,14 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+//import org.apache.tomcat.util.descriptor.web.SecurityCollection;
+//import org.apache.catalina.Context;
+//import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
+
+ 
 @Configuration
 public class TomcatConfig {
-
+    
     @Bean
     public TomcatServletWebServerFactory servletContainer() {
         TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
@@ -21,8 +26,8 @@ public class TomcatConfig {
     }
     
 }
-
 /* 
+ 
 @Configuration
 public class TomcatConfig {
 

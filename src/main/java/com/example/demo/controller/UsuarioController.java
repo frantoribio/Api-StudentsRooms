@@ -40,6 +40,7 @@ public class UsuarioController {
             usuarioExistente.setEmail(usuarioDetails.getEmail());
             Usuario actualizado = usuarioService.guardar(usuarioExistente);
             return ResponseEntity.ok(actualizado);
+            
         } else {
             return ResponseEntity.notFound().build();
         }  

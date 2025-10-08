@@ -74,7 +74,6 @@ public class Habitacion {
         this.direccion = direccion;
     }
 
-
     public BigDecimal getPrecioMensual() {
         return precioMensual;
     }

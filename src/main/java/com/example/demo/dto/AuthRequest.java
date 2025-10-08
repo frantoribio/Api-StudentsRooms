@@ -11,8 +11,7 @@ public class AuthRequest {
         this.contraseña = contraseña;
         this.rol = rol;
     }
-    
-    
+      
     public String getEmail() {
         return email;
     }

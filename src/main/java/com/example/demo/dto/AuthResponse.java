@@ -6,7 +6,6 @@ public class AuthResponse {
     private String token;
     private String rol;
     
-
     public AuthResponse(String email, String token, String rol) {  
         this.email = email;
         this.token = token;

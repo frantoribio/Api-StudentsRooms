@@ -71,6 +71,7 @@ public class JwtUtil {
             .getBody()
             .getSubject();
     }
+    
     public boolean validarToken(String token, org.springframework.security.core.userdetails.UserDetails userDetails) {
         final String email = extraerEmail(token);
         return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));

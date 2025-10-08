@@ -22,7 +22,8 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/auth/login").permitAll()
-                .requestMatchers("/api/habitaciones").permitAll()
+                .requestMatchers("/api/habitaciones/**").permitAll()
+                .requestMatchers("/imagenes/**").permitAll()
                 .anyRequest().authenticated()
             )
             .csrf(csrf -> csrf.disable())

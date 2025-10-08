@@ -21,6 +21,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private final UsuarioDetailsService usuarioDetailsService;
 
     public JwtFilter(JwtUtil jwtUtil, UsuarioDetailsService usuarioDetailsService) {
+        
         this.jwtUtil = jwtUtil;
         this.usuarioDetailsService = usuarioDetailsService;
     }
@@ -33,11 +34,13 @@ public class JwtFilter extends OncePerRequestFilter {
                                     throws ServletException, IOException {
         String path = request.getRequestURI();
         if (path.equals("/auth/login")) {
+            
             filterChain.doFilter(request, response);
             return;
         }
 
         if (path.equals("/api/habitaciones")) {
+            
             filterChain.doFilter(request, response);
             return;
         }   
@@ -45,6 +48,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            
             String token = authHeader.substring(7);
             String email = jwtUtil.extraerEmail(token);
 
