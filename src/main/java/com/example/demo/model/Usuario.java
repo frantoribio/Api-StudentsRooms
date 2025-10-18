@@ -6,6 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Usuario implements UserDetails{
 
@@ -21,6 +23,7 @@ public class Usuario implements UserDetails{
     private Rol rol;
 
     @OneToMany(mappedBy = "propietario")
+    @JsonManagedReference
     private List<Habitacion> habitacionesPublicadas = new ArrayList<>();
 
     @OneToMany(mappedBy = "alumno")

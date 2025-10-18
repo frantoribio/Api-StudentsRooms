@@ -1,49 +1,29 @@
-package com.example.demo.model;
+package com.example.demo.dto;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-//import javax.validation.constraints.Min;
-//import javax.validation.constraints.NotBlank;
-//import javax.validation.constraints.NotNull;
-
-@Entity
-public class Habitacion {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class HabitacionDTO {
+    
     private UUID id;
-
-    //@NotBlank(message = "No puede estar vacío")
     private String titulo;
-    
-    //@NotBlank(message = "No puede estar vacío")
     private String ciudad;
-
-    //@NotBlank(message = "No puede estar vacío")
     private String direccion;
-
-    //@NotNull(message = "El precio no puede ser nulo")
-    //@Min(value = 0, message = "El precio no puede ser negativo")
     private BigDecimal precioMensual;
-    
-    //@NotBlank(message = "No puede estar vacío")
     private String descripcion;
+    private List<String> imagenesUrl;
+    
+    // Aquí usamos el DTO Mínimo para el propietario, ¡rompiendo el ciclo!
+    private UsuarioMinimoDTO propietario; 
+    
+    // Opcionalmente, puedes ignorar 'reservas' o crear un 'ReservaMinimaDTO'
+    // private List<ReservaMinimaDTO> reservas; 
 
-    @ElementCollection
-    private List<String> imagenesUrl = new ArrayList<>();
-
-    @ManyToOne
-    private Usuario propietario;
-
-    @OneToMany(mappedBy = "habitacion")
-    @JsonBackReference
-    private List<Reserva> reservas = new ArrayList<>();
-
-    // Getters y setters
+    // Constructor vacío por defecto
+    public HabitacionDTO() {}
+    
+    // Getters y Setters
 
     public UUID getId() {
         return id;
@@ -101,20 +81,11 @@ public class Habitacion {
         this.imagenesUrl = imagenesUrl;
     }
 
-    public Usuario getPropietario() {
+    public UsuarioMinimoDTO getPropietario() {
         return propietario;
     }
 
-    public void setPropietario(Usuario propietario) {
+    public void setPropietario(UsuarioMinimoDTO propietario) {
         this.propietario = propietario;
     }
-
-    public List<Reserva> getReservas() {
-        return reservas;
-    }
-
-    public void setReservas(List<Reserva> reservas) {
-        this.reservas = reservas;
-    }
-    
 }

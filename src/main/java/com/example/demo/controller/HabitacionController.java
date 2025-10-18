@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.example.demo.model.Habitacion;
 import com.example.demo.service.HabitacionService;
+import com.example.demo.dto.HabitacionDTO;
 
 @RestController
 @RequestMapping("/api/habitaciones")
@@ -18,8 +19,8 @@ public class HabitacionController {
 
     
     @GetMapping 
-    public List<Habitacion> getAllHabitaciones() {
-        return habitacionService.findAll();      
+    public List<HabitacionDTO> getAllHabitaciones() {
+        return habitacionService.findAllDTO();      
     }
 
     @GetMapping("/{id}")
