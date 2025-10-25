@@ -1,17 +1,20 @@
 package com.example.demo.dto;
 
 import com.example.demo.model.Rol;
+
+
 import java.util.UUID;
 
 /**
  * DTO para la respuesta de la API al listar/obtener un Usuario.
- * Excluye: contraseña, listas de referencias (habitaciones/reservas) y detalles de UserDetails.
+ * Excluye: listas de referencias (habitaciones/reservas) y detalles de UserDetails.
  */
 public class UsuarioDTO {
     
     private UUID id;
     private String nombre;
     private String email;
+    private String contraseña;
     private Rol rol; 
 
     // Opcional: Contadores para dar contexto sin causar recursión
@@ -20,10 +23,11 @@ public class UsuarioDTO {
 
     public UsuarioDTO() {}
 
-    public UsuarioDTO(UUID id, String nombre, String email, Rol rol, int totalHabitacionesPublicadas, int totalReservasRealizadas) {
+    public UsuarioDTO(UUID id, String nombre, String email, String contraseña, Rol rol, int totalHabitacionesPublicadas, int totalReservasRealizadas) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
+        this.contraseña = contraseña;
         this.rol = rol;
         this.totalHabitacionesPublicadas = totalHabitacionesPublicadas;
         this.totalReservasRealizadas = totalReservasRealizadas;
@@ -76,6 +80,15 @@ public class UsuarioDTO {
 
     public void setTotalReservasRealizadas(int totalReservasRealizadas) {
         this.totalReservasRealizadas = totalReservasRealizadas;
+    }
+
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
     }
     
 }

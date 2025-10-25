@@ -5,10 +5,13 @@ import com.example.demo.dto.UsuarioMinimoDTO;
 import com.example.demo.model.Habitacion;
 import com.example.demo.model.Usuario;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**Clase de mapeo entre Habitacion y HabitacionDTO 
+ * Incluye manejo especial para el campo propietario
+ * para evitar referencias circulares.  
+ */
 @Component // Marca esta clase como un Bean de Spring
 public class HabitacionMapper {
 
@@ -16,6 +19,7 @@ public class HabitacionMapper {
      * Convierte una entidad Habitacion a su DTO correspondiente.
      */
     public HabitacionDTO toDTO(Habitacion habitacion) {
+        
         if (habitacion == null) {
             return null;
         }
@@ -43,6 +47,7 @@ public class HabitacionMapper {
      * Convierte una entidad Usuario a su DTO mínimo.
      */
     public UsuarioMinimoDTO toUsuarioMinimoDTO(Usuario usuario) {
+        
         if (usuario == null) {
             return null;
         }
@@ -62,8 +67,8 @@ public class HabitacionMapper {
      */
     public List<HabitacionDTO> toDTO(List<Habitacion> habitaciones) {
         return habitaciones.stream()
-                           .map(this::toDTO)
-                           .collect(Collectors.toList());
+        .map(this::toDTO)
+        .collect(Collectors.toList());
     }
     
 }

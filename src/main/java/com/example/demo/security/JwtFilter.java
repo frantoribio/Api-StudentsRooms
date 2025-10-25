@@ -14,12 +14,18 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/** 
+ * Filtro para la validación de tokens JWT en las solicitudes HTTP.
+ */
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
     private final UsuarioDetailsService usuarioDetailsService;
 
+    /**
+     * Constructor para el filtro JWT.
+     */ 
     public JwtFilter(JwtUtil jwtUtil, UsuarioDetailsService usuarioDetailsService) {
         
         this.jwtUtil = jwtUtil;
@@ -28,13 +34,13 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @SuppressWarnings("null")
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
-                                    throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+        FilterChain filterChain) throws ServletException, IOException {
+        
         String path = request.getRequestURI();
+
         if (path.equals("/auth/login")) {
-            
+               
             filterChain.doFilter(request, response);
             return;
         }

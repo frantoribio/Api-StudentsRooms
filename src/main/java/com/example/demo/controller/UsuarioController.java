@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 import com.example.demo.dto.UsuarioDTO;
+import com.example.demo.model.RegistroResponse;
 import com.example.demo.model.Usuario;
 import com.example.demo.service.UsuarioService;
 
@@ -45,4 +46,11 @@ public class UsuarioController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PostMapping("/registro")
+    public ResponseEntity<RegistroResponse> registrar(@RequestBody UsuarioDTO dto) {
+    RegistroResponse response = usuarioService.registrarUsuario(dto);
+    return ResponseEntity.ok(response); // ← ahora devuelve JSON válido
+}
+
 }

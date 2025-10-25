@@ -24,6 +24,7 @@ public class SecurityConfig {
                 .requestMatchers("/auth/login").permitAll()
                 .requestMatchers("/api/habitaciones/**").permitAll()
                 .requestMatchers("/imagenes/**").permitAll()
+                .requestMatchers("/api/usuarios/registro").permitAll()
                 .anyRequest().authenticated()
             )
             .csrf(csrf -> csrf.disable())
