@@ -3,6 +3,9 @@ package com.example.demo.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuración de JWT
+ */
 @Configuration
 @ConfigurationProperties(prefix = "jwt")
 public class JwtConfig {

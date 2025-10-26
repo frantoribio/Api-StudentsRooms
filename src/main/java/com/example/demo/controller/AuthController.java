@@ -16,6 +16,9 @@ import com.example.demo.dto.AuthResponse;
 import com.example.demo.model.Usuario;
 import com.example.demo.security.JwtUtil;
 
+/**
+ * Controlador REST para la autenticación de usuarios.
+ */
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -23,11 +26,23 @@ public class AuthController {
     private final AuthenticationManager authManager;
     private final JwtUtil jwtUtil;
 
+    /**
+     * Constructor para inyectar dependencias.
+     * 
+     * @param authManager Administrador de autenticación
+     * @param jwtUtil Utilidad para manejar JWT
+     */
     public AuthController(AuthenticationManager authManager, JwtUtil jwtUtil) {
         this.authManager = authManager;
         this.jwtUtil = jwtUtil;
     }
 
+    /**
+     * Maneja la solicitud de inicio de sesión.
+     * 
+     * @param request Datos de autenticación
+     * @return Respuesta con token JWT o error de autenticación
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@Validated @RequestBody AuthRequest request) {
         try {

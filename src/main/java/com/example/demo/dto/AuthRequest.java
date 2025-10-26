@@ -1,5 +1,8 @@
 package com.example.demo.dto;
 
+/**
+ * DTO que representa la solicitud de autenticación.
+ */
 public class AuthRequest {
     
     private String email;

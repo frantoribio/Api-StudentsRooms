@@ -2,6 +2,9 @@ package com.example.demo.dto;
 
 import java.util.UUID;
 
+/**
+ * DTO que representa la información mínima de un usuario.
+ */
 public class UsuarioMinimoDTO {
     
     private UUID id;

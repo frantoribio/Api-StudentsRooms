@@ -1,5 +1,8 @@
 package com.example.demo.model;
 
+/**
+ * Clase que representa la respuesta después de un registro exitoso.
+ */
 public class RegistroResponse {
     private String email;
     private String token;

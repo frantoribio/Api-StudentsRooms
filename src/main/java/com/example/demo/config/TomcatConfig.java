@@ -9,10 +9,15 @@ import org.springframework.context.annotation.Configuration;
 //import org.apache.catalina.Context;
 //import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 
- 
+/**
+ * Configuración de Tomcat
+ */
 @Configuration
 public class TomcatConfig {
-    
+
+    /**
+     * Configuración del contenedor servlet de Tomcat
+     */
     @Bean
     public TomcatServletWebServerFactory servletContainer() {
         TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();

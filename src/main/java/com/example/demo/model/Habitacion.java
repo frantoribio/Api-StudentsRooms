@@ -3,13 +3,15 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.*;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 //import javax.validation.constraints.Min;
 //import javax.validation.constraints.NotBlank;
 //import javax.validation.constraints.NotNull;
 
+/**
+ * Clase que representa una habitación disponible para alquiler.
+ */
 @Entity
 public class Habitacion {
 

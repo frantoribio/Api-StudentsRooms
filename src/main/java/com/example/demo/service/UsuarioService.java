@@ -71,6 +71,8 @@ public class UsuarioService {
         return usuarioRepository.findById(id);
     }
 
+
+
     /**
      * Guarda un usuario en el repositorio.
      * 

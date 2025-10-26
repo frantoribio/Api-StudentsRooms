@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * Clase que representa una reserva realizada por un usuario para una habitación.
+ */
 @Entity
 public class Reserva {
 

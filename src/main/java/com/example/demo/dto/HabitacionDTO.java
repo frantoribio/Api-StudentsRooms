@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * DTO que representa la información de una habitación.
+ */
 public class HabitacionDTO {
     
     private UUID id;

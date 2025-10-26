@@ -1,5 +1,8 @@
 package com.example.demo.dto;
 
+/**
+ * DTO que representa la respuesta de autenticación.
+ */
 public class AuthResponse {
     
     private String email;
