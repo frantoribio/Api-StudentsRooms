@@ -90,5 +90,6 @@ public class UsuarioController {
         RegistroResponse response = usuarioService.registrarUsuario(dto);
         return ResponseEntity.ok(response); // ← ahora devuelve JSON válido
     }
+    
 
 }

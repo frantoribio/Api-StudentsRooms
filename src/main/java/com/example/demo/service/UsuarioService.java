@@ -72,7 +72,6 @@ public class UsuarioService {
     }
 
 
-
     /**
      * Guarda un usuario en el repositorio.
      * 
@@ -80,8 +79,8 @@ public class UsuarioService {
      * @return Usuario guardado.
      */
     public Usuario guardar(Usuario usuario) {
-        String contraseñaEncriptada = passwordEncoder.encode(usuario.getContraseña());
-        usuario.setContraseña(contraseñaEncriptada);
+        //String contraseñaEncriptada = passwordEncoder.encode(usuario.getContraseña());
+        //usuario.setContraseña(contraseñaEncriptada);
         return usuarioRepository.save(usuario);
     }
 
