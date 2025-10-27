@@ -27,6 +27,13 @@ public class UsuarioMapper {
         dto.setRol(usuario.getRol());       
         return dto;
     }
+
+    public List<UsuarioDTO> listToDTO(List<Usuario> usuarios) {
+        return usuarios.stream()
+                       .map(this::toDTO)
+                       .collect(Collectors.toList());
+    }
+
     
     /**
      * Convierte una entidad Habitacion a un DTO HabitacionMinimaDTO.

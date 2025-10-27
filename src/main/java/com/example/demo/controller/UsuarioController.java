@@ -30,6 +30,7 @@ public class UsuarioController {
      */
     @GetMapping
     public List<UsuarioDTO> listarUsuarios() {
+        System.out.println("📣 Entrando a listarUsuarios()");
         return usuarioService.findAllDTO();
     }
 
@@ -90,6 +91,11 @@ public class UsuarioController {
         RegistroResponse response = usuarioService.registrarUsuario(dto);
         return ResponseEntity.ok(response); // ← ahora devuelve JSON válido
     }
-    
+
+    @GetMapping("/raw")
+    public List<Usuario> listarRaw() {
+    return usuarioService.listarTodos();
+}
+
 
 }

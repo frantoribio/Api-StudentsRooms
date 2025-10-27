@@ -47,7 +47,9 @@ public class UsuarioService {
      */
     public List<UsuarioDTO> findAllDTO() {
         List<Usuario> usuarios = usuarioRepository.findAll();
-        return usuarioMapper.toDTO(usuarios);
+        System.out.println("👥 Usuarios encontrados: " + usuarios.size());
+
+        return usuarioMapper.listToDTO(usuarios);
     }
 
     /**
