@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+
 import com.example.demo.dto.UsuarioDTO;
 import com.example.demo.model.RegistroResponse;
 import com.example.demo.model.Usuario;
@@ -29,6 +31,7 @@ public class UsuarioController {
      * @return Lista de UsuarioDTO
      */
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UsuarioDTO> listarUsuarios() {
         System.out.println("📣 Entrando a listarUsuarios()");
         return usuarioService.findAllDTO();
@@ -80,6 +83,16 @@ public class UsuarioController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarUsuario(@PathVariable UUID id) {
+        boolean eliminado = usuarioService.eliminarUsuario(id);
+        if (eliminado) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     /**
      * Registra un nuevo usuario.
      * 
@@ -96,6 +109,6 @@ public class UsuarioController {
     public List<Usuario> listarRaw() {
     return usuarioService.listarTodos();
 }
-
+    // Método duplicado eliminarUsuario(UUID id) eliminado para evitar errores de compilación.
 
 }

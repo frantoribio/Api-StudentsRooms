@@ -1,7 +1,7 @@
 package com.example.demo.dto;
 
 import com.example.demo.model.Rol;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 import java.util.UUID;
 
@@ -14,7 +14,6 @@ public class UsuarioDTO {
     private UUID id;
     private String nombre;
     private String email;
-    @JsonIgnore
     private String contraseña;
     private Rol rol; 
 

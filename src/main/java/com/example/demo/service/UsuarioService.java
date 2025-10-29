@@ -122,5 +122,13 @@ public class UsuarioService {
         
         return new RegistroResponse(usuario.getEmail(), token, usuario.getRol().name());
     }
+    public boolean eliminarUsuario(UUID id) {
+        if (usuarioRepository.existsById(id)) {
+            usuarioRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
