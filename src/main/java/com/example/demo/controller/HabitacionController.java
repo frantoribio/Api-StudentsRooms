@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import com.example.demo.model.Habitacion;
 import com.example.demo.service.HabitacionService;
+import com.example.demo.dto.CrearHabitacionRequest;
 import com.example.demo.dto.HabitacionDTO;
 
 /**
@@ -41,17 +42,40 @@ public class HabitacionController {
         return habitacion.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    
     /**
      * Crea una nueva habitación.
      * 
      * @param habitacion Datos de la habitación a crear
      * @return Habitación creada
      */
+    /*
     @PostMapping
     @PreAuthorize("hasRole('ADMIN', 'PROPIETARIO')")
     public Habitacion createHabitacion(@RequestBody Habitacion habitacion) {
         return habitacionService.save(habitacion);
     }
+    */
+
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN', 'PROPIETARIO')")
+    public Habitacion createHabitacion(@RequestBody CrearHabitacionRequest request) {
+    // Aquí mapeas el DTO a la Entidad y asignas el Propietario manualmente
+    // desde el contexto de seguridad (JWT).
+    
+        Habitacion habitacion = new Habitacion();
+        habitacion.setTitulo(request.getTitulo());
+        habitacion.setCiudad(request.getCiudad());
+        habitacion.setDireccion(request.getDireccion());
+        habitacion.setPrecioMensual(request.getPrecioMensual());
+        habitacion.setDescripcion(request.getDescripcion());
+        habitacion.setImagenesUrl(request.getImagenesUrl());
+        // Asignar el propietario desde el contexto de seguridad
+        // Usuario propietario = obtenerUsuarioDesdeContextoSeguridad();
+        // habitacion.setPropietario(propietario);
+        return habitacionService.save(habitacion);      
+
+}
 
     /**
      * Actualiza una habitación existente.
@@ -95,6 +119,20 @@ public class HabitacionController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    /**
+     * Endpoint para el frontend de Android.
+     * Devuelve las habitaciones del usuario autenticado (Rol PROPIETARIO).
+     * RUTA: GET /api/habitaciones/propietario
+     */
+    @GetMapping("/propietario") // <-- ¡Este es el nuevo endpoint!
+    @PreAuthorize("hasRole('PROPIETARIO')")
+    public ResponseEntity<List<Habitacion>> getHabitacionesPropietario() {
+        // Llama al servicio que utiliza SecurityContextHolder para el filtrado
+        List<Habitacion> habitaciones = habitacionService.obtenerHabitacionesDelPropietarioAutenticado();
+        
+        return ResponseEntity.ok(habitaciones);
     }
      
 }
