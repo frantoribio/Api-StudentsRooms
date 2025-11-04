@@ -42,11 +42,21 @@ Aplicación full-stack para la gestión de alquiler de habitaciones, con soporte
 git clone https://github.com/frantoribio/demo
 cd demo
 ```
-# Construye y levanta los servicios
-```bash
-# Construye y levanta los servicios
-docker-compose up --build
-```
+### 🛠️ Construcción y arranque del proyecto
+
+Para iniciar el backend, abre el proyecto `demo` en **Visual Studio Code** y asegúrate de tener la extensión de **Docker** instalada y activa.
+
+1. Abre el archivo `compose.yaml` ubicado en la raíz del proyecto.
+2. Desde la pestaña **Docker** en VS Code, selecciona el servicio correspondiente y haz clic en **"Compose Up"**.
+3. Espera a que los contenedores se levanten correctamente.
+
+Esto iniciará:
+
+- La API en `http://localhost:8080`
+- PostgreSQL con datos persistentes
+- NGINX con HTTPS si configuras Certbot
+
+> 💡 Nota: No es necesario usar el comando `docker-compose up --build` manualmente, ya que Visual Studio Code gestiona el proceso con el archivo `compose.yaml`.
 ## 🚀 Esto iniciará
 
 - API en `http://localhost:8080`
