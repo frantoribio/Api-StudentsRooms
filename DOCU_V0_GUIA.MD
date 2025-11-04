@@ -57,6 +57,7 @@ Esto iniciará:
 - NGINX con HTTPS si configuras Certbot
 
 > 💡 Nota: No es necesario usar el comando `docker-compose up --build` manualmente, ya que Visual Studio Code gestiona el proceso con el archivo `compose.yaml`.
+También se pueden omitir estos pasos ejecutando el proyecto desde el archivo `DemoApplication.java`.
 ## 🚀 Esto iniciará
 
 - API en `http://localhost:8080`
