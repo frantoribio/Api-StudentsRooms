@@ -43,19 +43,17 @@ git clone https://github.com/frantoribio/demo
 cd demo
 ```
 # Construye y levanta los servicios
+```bash
+# Construye y levanta los servicios
 docker-compose up --build
+```
 ## 🚀 Esto iniciará
 
 - API en `http://localhost:8080`
 - PostgreSQL con datos persistentes
 - NGINX con HTTPS si configuras Certbot
 
-### Swagger
 
-Disponible en `http://localhost:8080/swagger-ui`  
-*(solo accesible para rol ADMIN)*
-
----
 
 ## 📱 App Android
 
