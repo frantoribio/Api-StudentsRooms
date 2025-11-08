@@ -51,6 +51,7 @@ public class SecurityConfig {
                 .requestMatchers("/imagenes/**").permitAll()
                 .requestMatchers("/api/usuarios/registro").permitAll()
                 .requestMatchers("/api/usuarios/**").hasRole("ADMIN")
+                .requestMatchers("/public/uploads/photos").permitAll()
                 .anyRequest().authenticated()
             )
             .csrf(csrf -> csrf.disable())

@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import com.example.demo.model.Habitacion;
+import com.example.demo.model.Usuario;
 import com.example.demo.service.HabitacionService;
 import com.example.demo.dto.CrearHabitacionRequest;
 import com.example.demo.dto.HabitacionDTO;
@@ -70,9 +72,15 @@ public class HabitacionController {
         habitacion.setPrecioMensual(request.getPrecioMensual());
         habitacion.setDescripcion(request.getDescripcion());
         habitacion.setImagenesUrl(request.getImagenesUrl());
-        // Asignar el propietario desde el contexto de seguridad
-        // Usuario propietario = obtenerUsuarioDesdeContextoSeguridad();
-        // habitacion.setPropietario(propietario);
+        // 🔐 Obtener el email del usuario autenticado
+        String emailAutenticado = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // 🔍 Buscar el usuario en la base de datos
+        Usuario propietario = habitacionService.getUsuarioPorEmail(emailAutenticado);
+
+        // ✅ Asignar el propietario
+        habitacion.setPropietario(propietario);
+
         return habitacionService.save(habitacion);      
 
 }

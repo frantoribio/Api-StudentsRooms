@@ -39,6 +39,7 @@ public class Habitacion {
     private List<String> imagenesUrl = new ArrayList<>();
 
     @ManyToOne
+    @JoinColumn(name = "propietario_id", nullable = false)
     private Usuario propietario;
 
     @OneToMany(mappedBy = "habitacion")

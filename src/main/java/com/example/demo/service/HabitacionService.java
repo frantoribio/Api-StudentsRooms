@@ -1,10 +1,11 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.CrearHabitacionDto;
 import com.example.demo.dto.HabitacionDTO; 
 import com.example.demo.model.Habitacion;
+import com.example.demo.model.Usuario;
 import com.example.demo.repository.HabitacionRepository;
 import com.example.demo.repository.UsuarioRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service; 
@@ -18,8 +19,6 @@ import java.util.UUID;
  */
 @Service
 public class HabitacionService {
-
-
 
     @Autowired
     private HabitacionRepository habitacionRepository;
@@ -99,6 +98,26 @@ public class HabitacionService {
         habitacionRepository.deleteById(id);
     }
 
+    public Habitacion crearHabitacion(CrearHabitacionDto dto) {
+        Habitacion habitacion = new Habitacion();
+        habitacion.setId(UUID.randomUUID());
+        habitacion.setTitulo(dto.getTitulo());
+        habitacion.setCiudad(dto.getCiudad());
+        habitacion.setDireccion(dto.getDireccion());
+        habitacion.setPrecioMensual(dto.getPrecioMensual());
+        habitacion.setDescripcion(dto.getDescripcion());
 
+        // Buscar el propietario
+        Usuario propietario = usuarioRepository.findById(dto.getPropietarioId())
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        habitacion.setPropietario(propietario);
+        return habitacionRepository.save(habitacion);
+    }
+
+    public Usuario getUsuarioPorEmail(String email) {
+        return usuarioRepository.findByEmail(email)
+        .orElseThrow(() -> new RuntimeException("Usuario no encontrado con email: " + email));
+    }
     
 }

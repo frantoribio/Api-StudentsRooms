@@ -32,7 +32,6 @@ public class JwtFilter extends OncePerRequestFilter {
         this.usuarioDetailsService = usuarioDetailsService;
     }
 
-    @SuppressWarnings("null")
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
         FilterChain filterChain) throws ServletException, IOException {
