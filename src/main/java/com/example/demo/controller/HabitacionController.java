@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import com.example.demo.model.Habitacion;
 import com.example.demo.model.Usuario;
 import com.example.demo.service.HabitacionService;
+
 import com.example.demo.dto.CrearHabitacionRequest;
 import com.example.demo.dto.HabitacionDTO;
 
@@ -21,6 +22,8 @@ public class HabitacionController {
 
     @Autowired
     private HabitacionService habitacionService;
+
+   
 
     /**
      * Lista todas las habitaciones como DTOs.

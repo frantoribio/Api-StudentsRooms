@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.example.demo.config.UploadProperties;
 import com.example.demo.model.Imagen;
 import com.example.demo.model.Usuario;
 import com.example.demo.repository.UsuarioRepository;
@@ -23,11 +25,12 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/imagenes")
 public class ImagenController {
-    private final String UPLOAD_DIR = "public/uploads/photos"; // carpeta local o ruta absoluta
+    private final UploadProperties uploadProperties;
     private final UsuarioRepository usuarioRepository;
     private final ImagenRepository imagenRepository;
 
-    public ImagenController(UsuarioRepository usuarioRepository, ImagenRepository imagenRepository) {
+    public ImagenController(UploadProperties uploadProperties, UsuarioRepository usuarioRepository, ImagenRepository imagenRepository) {
+        this.uploadProperties = uploadProperties;
         this.usuarioRepository = usuarioRepository;
         this.imagenRepository = imagenRepository;
     }
@@ -42,12 +45,12 @@ public class ImagenController {
             if (file.isEmpty()) {
                 return ResponseEntity.badRequest().body(Map.of("error", "Archivo vacío"));
             }
-
             // 2. Crear nombre único
             String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
 
             // 3. Guardar archivo en disco
-            Path uploadPath = Paths.get(UPLOAD_DIR);
+            Path uploadPath = Paths.get(uploadProperties.getDir());
+            //Path uploadPath = Paths.get(UPLOAD_DIR);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
@@ -55,7 +58,7 @@ public class ImagenController {
             Files.copy(file.getInputStream(), filePath);
 
 
-            String url = "http://localhost:8080/imagenes/" + filename;
+            String url = uploadProperties.getBaseUrl() + filename;
 
             // Optionally associate and persist Imagen here using your ImagenRepository and UsuarioRepository.
             // Example (adjust to match your Imagen/Repository API):
