@@ -3,8 +3,12 @@ package com.example.demo.service;
 import com.example.demo.dto.UsuarioDTO;
 import com.example.demo.model.RegistroResponse;
 import com.example.demo.model.Usuario;
+import com.example.demo.repository.ImagenRepository;
 import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.security.JwtUtil;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -21,6 +25,7 @@ public class UsuarioService {
     private final UsuarioMapper usuarioMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final ImagenRepository imagenRepository;
 
     /**
      * Constructor para inyectar dependencias.
@@ -32,12 +37,13 @@ public class UsuarioService {
      */
     public UsuarioService(UsuarioRepository usuarioRepository,
         UsuarioMapper usuarioMapper, PasswordEncoder passwordEncoder,
-        JwtUtil jwtUtil) {
+        JwtUtil jwtUtil, ImagenRepository imagenRepository) {
 
         this.usuarioRepository = usuarioRepository;
         this.usuarioMapper = usuarioMapper;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+        this.imagenRepository = imagenRepository;
     }
 
     /**
@@ -122,8 +128,11 @@ public class UsuarioService {
         
         return new RegistroResponse(usuario.getEmail(), token, usuario.getRol().name());
     }
+    
+    @Transactional
     public boolean eliminarUsuario(UUID id) {
         if (usuarioRepository.existsById(id)) {
+            imagenRepository.deleteByUsuarioId(id);
             usuarioRepository.deleteById(id);
             return true;
         } else {

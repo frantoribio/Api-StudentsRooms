@@ -26,7 +26,7 @@ public class Usuario implements UserDetails{
     @Enumerated(EnumType.STRING)
     private Rol rol;
 
-    @OneToMany(mappedBy = "propietario")
+    @OneToMany(mappedBy = "propietario", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonManagedReference
     @JsonIgnore
     private List<Habitacion> habitacionesPublicadas = new ArrayList<>();

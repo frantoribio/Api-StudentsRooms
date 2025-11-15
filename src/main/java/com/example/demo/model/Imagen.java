@@ -12,8 +12,11 @@ public class Imagen {
     private String url;
     
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "usuario_id", nullable = true)
     private Usuario usuario;
+
+    public Imagen() {
+    }
 
 
 
