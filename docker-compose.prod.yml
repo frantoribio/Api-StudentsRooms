@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: demo-postgres-1
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: demo-api
+    depends_on:
+      - db
+    ports:
+      - "8443:8443"
+      - "8080:8080"  # redirección HTTP → HTTPS
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydatabase
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: secret
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      JWT_SECRET: clave-secreta-super-segura-de-32-caracteres-minimo!!
+      JWT_EXPIRATION: 86400000
+    volumes:
+      - ./uploads:/app/uploads
+      - ./keystore.p12:/app/keystore.p12
+
+volumes:
+  pgdata:
