@@ -140,4 +140,16 @@ public class UsuarioService {
         }
     }
 
+    public Optional<Usuario> actualizarUsuario (UUID id, Usuario usuarioDetails) {
+        String contraseñaEncriptada = passwordEncoder.encode(usuarioDetails.getContraseña());
+        usuarioDetails.setContraseña(contraseñaEncriptada);
+        return usuarioRepository.findById(id).map(usuario -> {
+            usuario.setNombre(usuarioDetails.getNombre());
+            usuario.setEmail(usuarioDetails.getEmail());
+            usuario.setContraseña(usuarioDetails.getContraseña());
+            usuario.setRol(usuarioDetails.getRol());
+            return usuarioRepository.save(usuario);
+        });
+    }
+
 }

@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.demo.dto.UsuarioDTO;
 import com.example.demo.model.RegistroResponse;
@@ -20,10 +21,13 @@ import java.util.UUID;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
-
-    public UsuarioController(UsuarioService usuarioService) {
+    private final PasswordEncoder passwordEncoder;
+    
+    public UsuarioController(UsuarioService usuarioService, PasswordEncoder passwordEncoder) {
         this.usuarioService = usuarioService;
+        this.passwordEncoder = passwordEncoder;
     }
+    
 
     /**
      * Lista todos los usuarios en forma de DTOs.
@@ -63,12 +67,24 @@ public class UsuarioController {
             UsuarioDTO usuarioExistente = usuario.get();
             usuarioExistente.setNombre(usuarioDetails.getNombre());
             usuarioExistente.setEmail(usuarioDetails.getEmail());
+            
+            if (usuarioDetails.getContraseña() != null && !usuarioDetails.getContraseña().isBlank()) {
+            usuarioExistente.setContraseña(
+                passwordEncoder.encode(usuarioDetails.getContraseña())
+            );
+        }
+
+
+            //usuarioExistente.setContraseña(usuarioDetails.getContraseña());
+            usuarioExistente.setRol(usuarioDetails.getRol());
 
             // Map DTO to entity
             Usuario usuarioEntity = new Usuario();
             usuarioEntity.setId(usuarioExistente.getId());
             usuarioEntity.setNombre(usuarioExistente.getNombre());
             usuarioEntity.setEmail(usuarioExistente.getEmail());
+            usuarioEntity.setContraseña(usuarioExistente.getContraseña());
+            usuarioEntity.setRol(usuarioExistente.getRol());
 
             // Save entity and map back to DTO
             Usuario saved = usuarioService.guardar(usuarioEntity);
@@ -76,6 +92,8 @@ public class UsuarioController {
             actualizado.setId(saved.getId());
             actualizado.setNombre(saved.getNombre());
             actualizado.setEmail(saved.getEmail());
+            actualizado.setContraseña(saved.getContraseña());
+            actualizado.setRol(saved.getRol());
 
             return ResponseEntity.ok(actualizado);
         } else {
@@ -84,6 +102,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> eliminarUsuario(@PathVariable UUID id) {
         boolean eliminado = usuarioService.eliminarUsuario(id);
         if (eliminado) {

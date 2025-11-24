@@ -122,6 +122,7 @@ public class HabitacionController {
      * @return 204 si se elimina, 404 si no se encuentra
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN', 'PROPIETARIO')")
     public ResponseEntity<Void> deleteHabitacion(@PathVariable UUID id) {
         Optional<Habitacion> habitacion = habitacionService.findById(id);
         if (habitacion.isPresent()) {
