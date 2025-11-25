@@ -63,7 +63,7 @@ public class HabitacionController {
     */
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN', 'PROPIETARIO')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROPIETARIO')")
     public Habitacion createHabitacion(@RequestBody CrearHabitacionRequest request) {
     // Aquí mapeas el DTO a la Entidad y asignas el Propietario manualmente
     // desde el contexto de seguridad (JWT).
@@ -75,13 +75,11 @@ public class HabitacionController {
         habitacion.setPrecioMensual(request.getPrecioMensual());
         habitacion.setDescripcion(request.getDescripcion());
         habitacion.setImagenesUrl(request.getImagenesUrl());
-        // 🔐 Obtener el email del usuario autenticado
+        
         String emailAutenticado = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        // 🔍 Buscar el usuario en la base de datos
         Usuario propietario = habitacionService.getUsuarioPorEmail(emailAutenticado);
 
-        // ✅ Asignar el propietario
         habitacion.setPropietario(propietario);
 
         return habitacionService.save(habitacion);      
@@ -95,7 +93,8 @@ public class HabitacionController {
      * @param habitacionDetails Detalles de la habitación a actualizar
      * @return Habitación actualizada o 404 si no se encuentra
      */
-    @PutMapping("/{id}")
+    /* @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROPIETARIO')")
     public ResponseEntity<Habitacion> updateHabitacion(@PathVariable UUID id, @RequestBody Habitacion habitacionDetails) {
         Optional<Habitacion> habitacion = habitacionService.findById(id);
         if (habitacion.isPresent()) {
@@ -113,6 +112,13 @@ public class HabitacionController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    } */
+
+    @PutMapping("{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'PROPIETARIO')")
+    public ResponseEntity<Habitacion> updateHabitacion(@PathVariable UUID id, @RequestBody Habitacion habitacionDetails) {
+        Habitacion actualizado = habitacionService.actualizaHabitacion(id, habitacionDetails);
+        return ResponseEntity.ok(actualizado);
     }
 
     /**
@@ -138,12 +144,10 @@ public class HabitacionController {
      * Devuelve las habitaciones del usuario autenticado (Rol PROPIETARIO).
      * RUTA: GET /api/habitaciones/propietario
      */
-    @GetMapping("/propietario") // <-- ¡Este es el nuevo endpoint!
+    @GetMapping("/propietario") 
     @PreAuthorize("hasRole('PROPIETARIO')")
     public ResponseEntity<List<Habitacion>> getHabitacionesPropietario() {
-        // Llama al servicio que utiliza SecurityContextHolder para el filtrado
-        List<Habitacion> habitaciones = habitacionService.obtenerHabitacionesDelPropietarioAutenticado();
-        
+        List<Habitacion> habitaciones = habitacionService.obtenerHabitacionesDelPropietarioAutenticado(); 
         return ResponseEntity.ok(habitaciones);
     }
      

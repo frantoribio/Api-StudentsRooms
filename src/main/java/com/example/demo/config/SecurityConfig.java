@@ -52,6 +52,11 @@ public class SecurityConfig {
                 .requestMatchers("/api/usuarios/registro").permitAll()
                 .requestMatchers("/api/usuarios/**").hasRole("ADMIN")
                 .requestMatchers("/public/uploads/photos").permitAll()
+                .requestMatchers(
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**",
+                    "/v3/api-docs.yaml"
+                ).permitAll()
                 .anyRequest().authenticated()
             )
             .csrf(csrf -> csrf.disable())

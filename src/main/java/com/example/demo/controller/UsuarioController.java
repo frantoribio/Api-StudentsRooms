@@ -21,11 +21,11 @@ import java.util.UUID;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
-    private final PasswordEncoder passwordEncoder;
+    //private final PasswordEncoder passwordEncoder;
     
     public UsuarioController(UsuarioService usuarioService, PasswordEncoder passwordEncoder) {
         this.usuarioService = usuarioService;
-        this.passwordEncoder = passwordEncoder;
+        //this.passwordEncoder = passwordEncoder;
     }
     
 
@@ -60,7 +60,7 @@ public class UsuarioController {
      * @param usuarioDetails Detalles del usuario a actualizar
      * @return UsuarioDTO actualizado o 404 si no se encuentra
      */
-    @PutMapping("/{id}")
+   /*  @PutMapping("/{id}")
     public ResponseEntity<UsuarioDTO> actualizarUsuario(@PathVariable UUID id, @RequestBody UsuarioDTO usuarioDetails) {
         Optional<UsuarioDTO> usuario = usuarioService.findByIdDTO(id);
         if (usuario.isPresent()) {
@@ -100,6 +100,15 @@ public class UsuarioController {
             return ResponseEntity.notFound().build();
         }
     }
+ */
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> actualizarUsuario(
+            @PathVariable UUID id,
+            @RequestBody Usuario usuario) {
+        Usuario actualizado = usuarioService.actualizaUsuario(id, usuario);
+        return ResponseEntity.ok(actualizado);
+    }
+
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")

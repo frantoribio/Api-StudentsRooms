@@ -119,5 +119,19 @@ public class HabitacionService {
         return usuarioRepository.findByEmail(email)
         .orElseThrow(() -> new RuntimeException("Usuario no encontrado con email: " + email));
     }
+
+    public Habitacion actualizaHabitacion(UUID id, Habitacion habitacionDetails) {
+        Habitacion habitacion = habitacionRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Habitación no encontrada con id: " + id));
+
+        habitacion.setTitulo(habitacionDetails.getTitulo());
+        habitacion.setCiudad(habitacionDetails.getCiudad());
+        habitacion.setDireccion(habitacionDetails.getDireccion());
+        habitacion.setPrecioMensual(habitacionDetails.getPrecioMensual());
+        habitacion.setDescripcion(habitacionDetails.getDescripcion());
+        habitacion.setImagenesUrl(habitacionDetails.getImagenesUrl());
+
+        return habitacionRepository.save(habitacion);
+    }
     
 }
