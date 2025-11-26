@@ -156,19 +156,26 @@ public class UsuarioService {
         Usuario existente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // Actualizar campos que sí pueden cambiar
         existente.setNombre(datosActualizados.getNombre());
         existente.setEmail(datosActualizados.getEmail());
         existente.setRol(datosActualizados.getRol());
 
-        // Manejo de contraseña
         if (datosActualizados.getContraseña() != null && !datosActualizados.getContraseña().isBlank()) {
-            // Si viene una nueva contraseña, encriptar antes de guardar
+
             existente.setContraseña(passwordEncoder.encode(datosActualizados.getContraseña()));
         }
-        // Si no viene contraseña, se conserva la anterior (no hacemos nada)
+        
 
         return usuarioRepository.save(existente);
+    }
+
+    /**
+     * Busca un usuario por su email.
+     * Devuelvuelve el UUID del usuario.
+     */
+    public Optional<Usuario> findByEmail(String email) {
+        return usuarioRepository.findByEmail(email);
+  
     }
 
 

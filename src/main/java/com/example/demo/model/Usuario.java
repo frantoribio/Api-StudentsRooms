@@ -32,6 +32,8 @@ public class Usuario implements UserDetails{
     private List<Habitacion> habitacionesPublicadas = new ArrayList<>();
 
     @OneToMany(mappedBy = "alumno")
+    @JsonManagedReference
+    @JsonIgnore
     private List<Reserva> reservasRealizadas = new ArrayList<>();
 
     public UUID getId() {

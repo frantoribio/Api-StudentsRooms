@@ -39,17 +39,12 @@ public class HabitacionService {
      * Obtiene todas las habitaciones de la base de datos para el usuario autenticado.
      */
     public List<Habitacion> obtenerHabitacionesDelPropietarioAutenticado() {
-        // 1. Obtener el email (o el campo que uses como 'Principal') del usuario autenticado
+    
         String emailAutenticado = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        // 2. Buscar el ID del Usuario (Propietario)
-        // Se asume que getUsuarioPorEmail devuelve la entidad Usuario o lanza una excepción.
         UUID propietarioId = usuarioRepository.findByEmail(emailAutenticado)
                                 .orElseThrow(() -> new RuntimeException("Propietario no encontrado"))
                                 .getId();
-
-        // 3. Buscar habitaciones por el ID del propietario
-        // Necesitas añadir este método en tu HabitacionRepository
         return habitacionRepository.findByPropietarioId(propietarioId);
     }
 

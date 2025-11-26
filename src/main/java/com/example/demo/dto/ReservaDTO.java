@@ -1,81 +1,64 @@
-package com.example.demo.model;
+package com.example.demo.dto;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.example.demo.model.EstadoReserva;
 
-/**
- * Clase que representa una reserva realizada por un usuario para una habitación.
- */
-@Entity
-public class Reserva {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class ReservaDTO {
     private UUID id;
-
-    @ManyToOne
-    private Habitacion habitacion;
-
-    @ManyToOne
-    @JsonBackReference
-    private Usuario alumno;
-
+    private UUID habitacionId;
+    private UUID alumnoId;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
-    
-    @Enumerated(EnumType.STRING)
     private EstadoReserva estadoReserva;
-    
 
+    public ReservaDTO(UUID id, UUID habitacionId, UUID alumnoId, LocalDate fechaInicio, LocalDate fechaFin, EstadoReserva estadoReserva) {
+        this.id = id;
+        this.habitacionId = habitacionId;
+        this.alumnoId = alumnoId;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.estadoReserva = estadoReserva;
+    }
+
+    // Getters y Setters
     public UUID getId() {
         return id;
     }
-
     public void setId(UUID id) {
         this.id = id;
     }
-
-    public Habitacion getHabitacion() {
-        return habitacion;
+    public UUID getHabitacionId() {
+        return habitacionId;
     }
-
-    public void setHabitacion(Habitacion habitacion) {
-        this.habitacion = habitacion;
+    public void setHabitacionId(UUID habitacionId) {
+        this.habitacionId = habitacionId;
     }
-
-    public Usuario getAlumno() {
-        return alumno;
+    public UUID getAlumnoId() {
+        return alumnoId;
     }
-
-    public void setAlumno(Usuario alumno) {
-        this.alumno = alumno;
+    public void setAlumnoId(UUID alumnoId) {
+        this.alumnoId = alumnoId;
     }
-
     public LocalDate getFechaInicio() {
         return fechaInicio;
     }
-
     public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
-
     public LocalDate getFechaFin() {
         return fechaFin;
     }
-
     public void setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
     }
-
     public EstadoReserva getEstadoReserva() {
         return estadoReserva;
     }
-
     public void setEstadoReserva(EstadoReserva estadoReserva) {
         this.estadoReserva = estadoReserva;
     }
-    
+
+
 }

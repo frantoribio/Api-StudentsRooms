@@ -55,4 +55,11 @@ public class ReservaService {
         reservaRepository.deleteById(id);
     }
 
+    /**
+     * Extrae el ID del alumno logado de una reserva.
+     */
+    public UUID getAlumnoIdFromReserva(Reserva reserva) {
+        return reserva.getAlumno().getId();
+    }
+
 }

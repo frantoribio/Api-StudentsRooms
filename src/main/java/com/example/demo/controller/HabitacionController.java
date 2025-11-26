@@ -65,8 +65,6 @@ public class HabitacionController {
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'PROPIETARIO')")
     public Habitacion createHabitacion(@RequestBody CrearHabitacionRequest request) {
-    // Aquí mapeas el DTO a la Entidad y asignas el Propietario manualmente
-    // desde el contexto de seguridad (JWT).
     
         Habitacion habitacion = new Habitacion();
         habitacion.setTitulo(request.getTitulo());
@@ -115,10 +113,11 @@ public class HabitacionController {
     } */
 
     @PutMapping("{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PROPIETARIO')")
-    public ResponseEntity<Habitacion> updateHabitacion(@PathVariable UUID id, @RequestBody Habitacion habitacionDetails) {
-        Habitacion actualizado = habitacionService.actualizaHabitacion(id, habitacionDetails);
-        return ResponseEntity.ok(actualizado);
+    public ResponseEntity<Habitacion> updateHabitacion(
+        @PathVariable UUID id, 
+        @RequestBody Habitacion habitacionDetails) {
+        Habitacion actualizada = habitacionService.actualizaHabitacion(id, habitacionDetails);
+        return ResponseEntity.ok(actualizada);
     }
 
     /**

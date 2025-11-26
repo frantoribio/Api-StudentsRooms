@@ -3,6 +3,8 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.*;
+
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 //import javax.validation.constraints.Min;
@@ -119,5 +121,7 @@ public class Habitacion {
     public void setReservas(List<Reserva> reservas) {
         this.reservas = reservas;
     }
+
+    
     
 }
