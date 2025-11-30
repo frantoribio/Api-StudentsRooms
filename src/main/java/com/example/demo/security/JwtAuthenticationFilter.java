@@ -19,10 +19,8 @@ import java.io.IOException;
  */ 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
     @Autowired
     private JwtUtil jwtUtils;
-
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -33,8 +31,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
         @org.springframework.lang.NonNull HttpServletRequest request,
         @org.springframework.lang.NonNull HttpServletResponse response,
-        @org.springframework.lang.NonNull FilterChain filterChain) throws ServletException, IOException {
-
+        @org.springframework.lang.NonNull FilterChain filterChain) 
+        
+    throws ServletException, IOException {
         String token = jwtUtils.extractToken(request);
 
         if (token != null && jwtUtils.validateToken(token)) {
@@ -49,6 +48,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-    }
-    
+    }   
 }

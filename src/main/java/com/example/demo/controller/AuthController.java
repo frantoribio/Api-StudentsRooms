@@ -58,11 +58,9 @@ public class AuthController {
             
             return ResponseEntity.ok(response);
 
-            //return ResponseEntity.ok(new AuthResponse(token));
             
         } catch (AuthenticationException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
         }
-    }
-    
+    }  
 }

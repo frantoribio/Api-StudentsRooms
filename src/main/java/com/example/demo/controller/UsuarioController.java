@@ -1,10 +1,11 @@
 package com.example.demo.controller;
 
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import com.example.demo.dto.UsuarioDTO;
 import com.example.demo.model.RegistroResponse;
 import com.example.demo.model.Usuario;
@@ -19,14 +20,15 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
-
     private final UsuarioService usuarioService;
     //private final PasswordEncoder passwordEncoder;
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioController.class);
     
     public UsuarioController(UsuarioService usuarioService, PasswordEncoder passwordEncoder) {
         this.usuarioService = usuarioService;
         //this.passwordEncoder = passwordEncoder;
     }
+    
     
 
     /**
@@ -38,6 +40,7 @@ public class UsuarioController {
     @PreAuthorize("hasRole('ADMIN')")
     public List<UsuarioDTO> listarUsuarios() {
         System.out.println("📣 Entrando a listarUsuarios()");
+        logger.info("Entrando a listarUsuarios()");
         return usuarioService.findAllDTO();
     }
 
@@ -50,6 +53,7 @@ public class UsuarioController {
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioDTO> obtenerUsuarioPorId(@PathVariable UUID id) {
         Optional<UsuarioDTO> usuario = usuarioService.findByIdDTO(id);
+        logger.info("GET /api/usuarios/" + id + " - solicitando usuario por ID");
         return usuario.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -106,6 +110,11 @@ public class UsuarioController {
             @PathVariable UUID id,
             @RequestBody Usuario usuario) {
         Usuario actualizado = usuarioService.actualizaUsuario(id, usuario);
+        if (actualizado == null) {
+            logger.info("PUT /api/usuarios/" + id + " - usuario no encontrado para actualizar");
+            return ResponseEntity.notFound().build();
+        }
+        logger.info("PUT /api/usuarios/" + id + " - actualizando usuario");
         return ResponseEntity.ok(actualizado);
     }
 
@@ -115,8 +124,10 @@ public class UsuarioController {
     public ResponseEntity<Void> eliminarUsuario(@PathVariable UUID id) {
         boolean eliminado = usuarioService.eliminarUsuario(id);
         if (eliminado) {
+            logger.info("DELETE /api/usuarios/" + id + " - eliminando usuario");
             return ResponseEntity.noContent().build();
         } else {
+            logger.info("DELETE /api/usuarios/" + id + " - usuario no encontrado para eliminar");
             return ResponseEntity.notFound().build();
         }
     }
@@ -130,13 +141,12 @@ public class UsuarioController {
     @PostMapping("/registro")
     public ResponseEntity<RegistroResponse> registrar(@RequestBody UsuarioDTO dto) {
         RegistroResponse response = usuarioService.registrarUsuario(dto);
-        return ResponseEntity.ok(response); // ← ahora devuelve JSON válido
+        logger.info("POST /api/usuarios/registro - registrando usuario: " + dto.getEmail());
+        return ResponseEntity.ok(response); 
     }
 
     @GetMapping("/raw")
     public List<Usuario> listarRaw() {
     return usuarioService.listarTodos();
-}
-    // Método duplicado eliminarUsuario(UUID id) eliminado para evitar errores de compilación.
-
+    }
 }

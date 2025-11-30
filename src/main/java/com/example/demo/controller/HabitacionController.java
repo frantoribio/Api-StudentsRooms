@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
-import java.util.*;  
+import java.util.*;
+import java.util.logging.Logger;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import com.example.demo.model.Habitacion;
 import com.example.demo.model.Usuario;
 import com.example.demo.service.HabitacionService;
-
 import com.example.demo.dto.CrearHabitacionRequest;
 import com.example.demo.dto.HabitacionDTO;
 
@@ -23,6 +24,8 @@ public class HabitacionController {
     @Autowired
     private HabitacionService habitacionService;
 
+    private static final Logger logger = Logger.getLogger(HabitacionController.class.getName());
+
    
 
     /**
@@ -32,6 +35,9 @@ public class HabitacionController {
      */
     @GetMapping 
     public List<HabitacionDTO> getAllHabitaciones() {
+        logger.info("GET /api/habitaciones - solicitando todas las habitaciones");
+        int habitaciones = habitacionService.findAllDTO().size();
+        logger.info("Se encontraron " + habitaciones + " habitaciones");
         return habitacionService.findAllDTO();      
     }
 
@@ -44,6 +50,7 @@ public class HabitacionController {
     @GetMapping("/{id}")
     public ResponseEntity<HabitacionDTO> getHabitacionById(@PathVariable UUID id) {
         Optional<HabitacionDTO> habitacion = habitacionService.findByIdDTO(id);
+        logger.info("GET /api/habitaciones/" + id + " - solicitando habitación por ID");
         return habitacion.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -79,6 +86,7 @@ public class HabitacionController {
         Usuario propietario = habitacionService.getUsuarioPorEmail(emailAutenticado);
 
         habitacion.setPropietario(propietario);
+        logger.info("POST /api/habitaciones - creando nueva habitación para propietario: " + emailAutenticado);
 
         return habitacionService.save(habitacion);      
 
@@ -117,6 +125,10 @@ public class HabitacionController {
         @PathVariable UUID id, 
         @RequestBody Habitacion habitacionDetails) {
         Habitacion actualizada = habitacionService.actualizaHabitacion(id, habitacionDetails);
+        if (actualizada == null) {
+            return ResponseEntity.notFound().build();
+        }
+        logger.info("PUT /api/habitaciones/" + id + " - actualizando habitación");
         return ResponseEntity.ok(actualizada);
     }
 
@@ -132,8 +144,10 @@ public class HabitacionController {
         Optional<Habitacion> habitacion = habitacionService.findById(id);
         if (habitacion.isPresent()) {
             habitacionService.deleteById(id);
+            logger.info("DELETE /api/habitaciones/" + id + " - eliminando habitación");
             return ResponseEntity.noContent().build();
         } else {
+            logger.info("DELETE /api/habitaciones/" + id + " - habitación no encontrada");
             return ResponseEntity.notFound().build();
         }
     }
@@ -146,7 +160,8 @@ public class HabitacionController {
     @GetMapping("/propietario") 
     @PreAuthorize("hasRole('PROPIETARIO')")
     public ResponseEntity<List<Habitacion>> getHabitacionesPropietario() {
-        List<Habitacion> habitaciones = habitacionService.obtenerHabitacionesDelPropietarioAutenticado(); 
+        List<Habitacion> habitaciones = habitacionService.obtenerHabitacionesDelPropietarioAutenticado();
+        logger.info("GET /api/habitaciones/propietario - solicitando habitaciones del propietario autenticado"); 
         return ResponseEntity.ok(habitaciones);
     }
      

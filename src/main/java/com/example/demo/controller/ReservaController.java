@@ -5,9 +5,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.security.core.Authentication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//import com.example.demo.dto.ReservaDTO;
 import com.example.demo.model.Reserva;
 import com.example.demo.model.Usuario;
 import com.example.demo.service.ReservaService;
@@ -36,6 +36,8 @@ public class ReservaController {
     @Autowired
     private UsuarioService usuarioService;
 
+    private static final Logger logger = LoggerFactory.getLogger(ReservaController.class);
+
     /**
      * Lista todas las reservas.
      * 
@@ -43,6 +45,7 @@ public class ReservaController {
      */
     @GetMapping    
     public List<Reserva> getAllReservas() {
+        logger.info("GET /api/reservas - listando todas las reservas: " + reservaService.findAll().size());
         return reservaService.findAll();
     
     }
@@ -56,20 +59,11 @@ public class ReservaController {
     @GetMapping("/{id}")
     public ResponseEntity<Reserva> getReservaById(@PathVariable UUID id) {
         Optional<Reserva> reserva = reservaService.findById(id);
+        logger.info("GET /api/reservas/" + id + " - solicitando reserva por ID");
         return reserva.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    /**
-     * Crea una nueva reserva.
-     * 
-     * @param reserva Datos de la reserva a crear
-     * @return Reserva creada
-     */
-    /* @PostMapping
-    @PreAuthorize("hasRole('ADMIN', 'PROPIETARIO', 'ALUMNO')")
-    public Reserva crearReserva(@RequestBody Reserva reserva) {
-        return reservaService.save(reserva);
-    } */
+  
 
     /**
      * Crea una nueva reserva asociada al usuario autenticado.
@@ -82,17 +76,9 @@ public class ReservaController {
         String username = authentication.getName();
         Optional<Usuario> usuarioOpt = usuarioService.findByEmail(username);
         reserva.setAlumno(usuarioOpt.orElse(null));
+        logger.info("POST /api/reservas - creando reserva para usuario: " + username);
         return reservaService.save(reserva);
     } 
-
-   /*  @PostMapping
-    public Reserva crearReserva(@RequestBody Reserva reserva, Authentication authentication) {
-        // Buscar el usuario autenticado por email (sub del JWT)
-        Usuario usuario = usuarioService.findByEmail(authentication.getName());
-        reserva.setAlumno(usuario);
-        return reservaService.save(reserva);
-    }
- */
 
 
     /**
@@ -111,10 +97,11 @@ public class ReservaController {
             updatedReserva.setFechaInicio(reservaDetails.getFechaInicio());
             updatedReserva.setFechaFin(reservaDetails.getFechaFin());
             updatedReserva.setEstadoReserva(reservaDetails.getEstadoReserva());
-            
+            logger.info("PUT /api/reservas/" + id + " - actualizando reserva");
             return ResponseEntity.ok(reservaService.save(updatedReserva));
             
         } else {
+            logger.info("PUT /api/reservas/" + id + " - reserva no encontrada para actualizar");
             return ResponseEntity.notFound().build();
         }
     }
@@ -130,23 +117,12 @@ public class ReservaController {
         Optional<Reserva> reserva = reservaService.findById(id);
         if (reserva.isPresent()) {
             reservaService.deleteById(id);
+            logger.info("DELETE /api/reservas/" + id + " - eliminando reserva");
             return ResponseEntity.noContent().build();
         } else {
+            logger.info("DELETE /api/reservas/" + id + " - reserva no encontrada para eliminar");
             return ResponseEntity.notFound().build();
         }
     } 
-
-   /*  @PostMapping
-    public ReservaDTO crearReserva(@RequestBody Reserva reserva, Authentication auth) {
-        Reserva saved = reservaService.save(reserva);
-        return new ReservaDTO(
-            saved.getId(),
-            saved.getHabitacion().getId(),
-            saved.getAlumno().getId(),
-            saved.getFechaInicio(),
-            saved.getFechaFin(),
-            saved.getEstadoReserva()
-        );
-    } */
 
 }
