@@ -20,21 +20,18 @@ public class ReservaService {
     @Autowired
     private ReservaRepository reservaRepository;
 
-    @Autowired
-    private ReservaMapper reservaMapper;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
 
 
     public ReservaService(ReservaRepository reservaRepository, ReservaMapper reservaMapper, UsuarioRepository usuarioRepository) {
         this.reservaRepository = reservaRepository;
-        this.reservaMapper = reservaMapper;
-        this.usuarioRepository = usuarioRepository;
+
     }
 
      public List<ReservaDTO> findAllDTO() {
-        return reservaMapper.toDTOList(reservaRepository.findAll());
+        List<Reserva> reservas = reservaRepository.findAll();
+        return reservas.stream()
+                .map(ReservaMapper::toDTO)
+                .toList();
     }
 
     public Optional<Reserva> findById(UUID id) {

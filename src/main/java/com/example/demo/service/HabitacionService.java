@@ -53,8 +53,10 @@ public class HabitacionService {
      * @return Lista de HabitacionDTO
      */
     public List<HabitacionDTO> findAllDTO() {
-        List<Habitacion> habitaciones = habitacionRepository.findAll();
-        return habitacionMapper.toDTO(habitaciones); 
+        return habitacionRepository.findAll()
+                                   .stream()
+                                   .map(habitacionMapper::toDTO) // Usamos el mapper para convertir
+                                   .toList();
     }
 
     /**
