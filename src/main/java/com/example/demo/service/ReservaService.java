@@ -1,7 +1,10 @@
 package com.example.demo.service;
     
+import com.example.demo.dto.ReservaDTO;
 import com.example.demo.model.Reserva;
 import com.example.demo.repository.ReservaRepository;
+import com.example.demo.repository.UsuarioRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -17,49 +20,38 @@ public class ReservaService {
     @Autowired
     private ReservaRepository reservaRepository;
 
-    /**
-     * Obtiene todas las reservas.
-     * 
-     * @return Lista de reservas.
-     */
-    public List<Reserva> findAll() {
-        return reservaRepository.findAll();
+    @Autowired
+    private ReservaMapper reservaMapper;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+
+    public ReservaService(ReservaRepository reservaRepository, ReservaMapper reservaMapper, UsuarioRepository usuarioRepository) {
+        this.reservaRepository = reservaRepository;
+        this.reservaMapper = reservaMapper;
+        this.usuarioRepository = usuarioRepository;
     }
 
-    /**
-     * Obtiene una reserva por su ID.
-     * 
-     * @param id
-     * @return Reserva encontrada o vacía.
-     */
+     public List<ReservaDTO> findAllDTO() {
+        return reservaMapper.toDTOList(reservaRepository.findAll());
+    }
+
     public Optional<Reserva> findById(UUID id) {
         return reservaRepository.findById(id);
     }
 
-    /**
-     * Guarda una reserva.
-     * 
-     * @param reserva
-     * @return Reserva guardada.
-     */
     public Reserva save(Reserva reserva) {
         return reservaRepository.save(reserva);
     }
-    
-    /**
-     * Elimina una reserva por su ID.
-     * 
-     * @param id
-     */
+
     public void deleteById(UUID id) {
         reservaRepository.deleteById(id);
     }
 
-    /**
-     * Extrae el ID del alumno logado de una reserva.
-     */
-    public UUID getAlumnoIdFromReserva(Reserva reserva) {
-        return reserva.getAlumno().getId();
+    public List<Reserva> findAll() {
+    return reservaRepository.findAll();
     }
 
 }
+

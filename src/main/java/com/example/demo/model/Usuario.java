@@ -32,9 +32,16 @@ public class Usuario implements UserDetails{
     private List<Habitacion> habitacionesPublicadas = new ArrayList<>();
 
     @OneToMany(mappedBy = "alumno")
-    @JsonManagedReference
+    @JsonManagedReference("alumno-reservas")
     @JsonIgnore
     private List<Reserva> reservasRealizadas = new ArrayList<>();
+
+    @OneToMany(mappedBy = "propietario", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonManagedReference("propietario-reservas")
+    @JsonIgnore
+    private List<Reserva> reservasComoPropietario = new ArrayList<>();
+
+
 
     public UUID getId() {
         return id;

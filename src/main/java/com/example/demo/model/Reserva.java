@@ -20,8 +20,12 @@ public class Reserva {
     private Habitacion habitacion;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("alumno-reservas")
     private Usuario alumno;
+
+    @ManyToOne
+    @JsonBackReference("propietario-reservas")
+    private Usuario propietario;
 
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
@@ -76,6 +80,14 @@ public class Reserva {
 
     public void setEstadoReserva(EstadoReserva estadoReserva) {
         this.estadoReserva = estadoReserva;
+    }
+
+    public Usuario getPropietario() {
+        return propietario;
+    }
+
+    public void setPropietario(Usuario propietario) {
+        this.propietario = propietario;
     }
     
 }

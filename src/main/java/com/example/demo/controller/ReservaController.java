@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.ReservaDTO;
 import com.example.demo.model.Reserva;
 import com.example.demo.model.Usuario;
 import com.example.demo.service.ReservaService;
@@ -44,33 +45,24 @@ public class ReservaController {
      * @return Lista de reservas
      */
     @GetMapping    
-    public List<Reserva> getAllReservas() {
+    public List<ReservaDTO> getAllReservas() {
+        List<ReservaDTO> reservas = reservaService.findAllDTO();
         logger.info("GET /api/reservas - listando todas las reservas: " + reservaService.findAll().size());
-        return reservaService.findAll();
+        return reservas;
     
     }
 
-    /**
-     * Obtiene una reserva por su ID.
-     * 
-     * @param id ID de la reserva
-     * @return Reserva si se encuentra, 404 si no
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<Reserva> getReservaById(@PathVariable UUID id) {
-        Optional<Reserva> reserva = reservaService.findById(id);
-        logger.info("GET /api/reservas/" + id + " - solicitando reserva por ID");
-        return reserva.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+   @GetMapping("/{id}")
+    public ResponseEntity<ReservaDTO> getReservaById(@PathVariable UUID id) {
+        return reservaService.findById(id)
+                .map(reserva -> ResponseEntity.ok(reservaService.findAllDTO()
+                        .stream()
+                        .filter(dto -> dto.getId().equals(id))
+                        .findFirst()
+                        .orElse(null)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-  
-
-    /**
-     * Crea una nueva reserva asociada al usuario autenticado.
-     * @param reserva
-     * @param authentication
-     * @return
-     */
     @PostMapping
     public Reserva crearReserva(@RequestBody Reserva reserva, Authentication authentication) {
         String username = authentication.getName();
@@ -78,51 +70,32 @@ public class ReservaController {
         reserva.setAlumno(usuarioOpt.orElse(null));
         logger.info("POST /api/reservas - creando reserva para usuario: " + username);
         return reservaService.save(reserva);
-    } 
+    }
 
-
-    /**
-     * Actualiza una reserva existente.
-     * 
-     * @param id ID de la reserva a actualizar
-     * @param reservaDetails Detalles de la reserva a actualizar
-     * @return Reserva actualizada o 404 si no se encuentra
-     */
     @PutMapping("/{id}")
     public ResponseEntity<Reserva> updateReserva(@PathVariable UUID id, @RequestBody Reserva reservaDetails) {
-        Optional<Reserva> reserva = reservaService.findById(id);
-        if (reserva.isPresent()) {
-            Reserva updatedReserva = reserva.get();
-            updatedReserva.setAlumno(reservaDetails.getAlumno());
-            updatedReserva.setFechaInicio(reservaDetails.getFechaInicio());
-            updatedReserva.setFechaFin(reservaDetails.getFechaFin());
-            updatedReserva.setEstadoReserva(reservaDetails.getEstadoReserva());
-            logger.info("PUT /api/reservas/" + id + " - actualizando reserva");
-            return ResponseEntity.ok(reservaService.save(updatedReserva));
-            
-        } else {
-            logger.info("PUT /api/reservas/" + id + " - reserva no encontrada para actualizar");
-            return ResponseEntity.notFound().build();
-        }
+        return reservaService.findById(id)
+                .map(reserva -> {
+                    reserva.setAlumno(reservaDetails.getAlumno());
+                    reserva.setFechaInicio(reservaDetails.getFechaInicio());
+                    reserva.setFechaFin(reservaDetails.getFechaFin());
+                    reserva.setEstadoReserva(reservaDetails.getEstadoReserva());
+                    logger.info("PUT /api/reservas/" + id + " - actualizando reserva");
+                    return ResponseEntity.ok(reservaService.save(reserva));
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
-    
-    /**
-     * Elimina una reserva por su ID.
-     * 
-     * @param id ID de la reserva a eliminar
-     * @return 204 si se elimina, 404 si no se encuentra
-     */
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteReserva(@PathVariable UUID id) {
-        Optional<Reserva> reserva = reservaService.findById(id);
-        if (reserva.isPresent()) {
-            reservaService.deleteById(id);
-            logger.info("DELETE /api/reservas/" + id + " - eliminando reserva");
-            return ResponseEntity.noContent().build();
-        } else {
-            logger.info("DELETE /api/reservas/" + id + " - reserva no encontrada para eliminar");
-            return ResponseEntity.notFound().build();
-        }
-    } 
+        return reservaService.findById(id)
+                .map(reserva -> {
+                    reservaService.deleteById(id);
+                    logger.info("DELETE /api/reservas/" + id + " - eliminando reserva");
+                    return ResponseEntity.noContent().<Void>build();
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 
 }
