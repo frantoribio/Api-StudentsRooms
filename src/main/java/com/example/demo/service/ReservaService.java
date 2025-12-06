@@ -50,5 +50,11 @@ public class ReservaService {
     return reservaRepository.findAll();
     }
 
+    public List<ReservaDTO> obtenerReservasPorHabitacion(UUID habitacionId){
+        return reservaRepository.findByHabitacionId(habitacionId).stream()
+                .map(ReservaMapper::toDTO)
+                .toList();
+    }
+
 }
 

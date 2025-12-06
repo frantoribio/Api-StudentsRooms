@@ -14,7 +14,7 @@ import com.example.demo.model.Usuario;
 public class AdminUserInitializer {
 
     @Bean
-    public CommandLineRunner initAdminUser(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    CommandLineRunner initAdminUser(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             String adminEmail = "admin@alquilerapp.com";
             String adminPassword = "admin123";

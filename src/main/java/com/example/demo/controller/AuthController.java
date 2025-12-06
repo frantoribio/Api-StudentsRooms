@@ -53,8 +53,9 @@ public class AuthController {
             Usuario usuario = (Usuario) auth.getPrincipal();
             String token = jwtUtil.generarToken(auth);
             String rol = usuario.getRol() != null ? usuario.getRol().name() : null;
+            String id = usuario.getId() != null ? usuario.getId().toString() : null;
             
-            AuthResponse response = new AuthResponse(request.getEmail(), token, rol);
+            AuthResponse response = new AuthResponse(request.getEmail(), token, rol, id);
             
             return ResponseEntity.ok(response);
 

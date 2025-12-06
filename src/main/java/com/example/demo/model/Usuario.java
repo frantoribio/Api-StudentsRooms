@@ -31,12 +31,12 @@ public class Usuario implements UserDetails{
     @JsonIgnore
     private List<Habitacion> habitacionesPublicadas = new ArrayList<>();
 
-    @OneToMany(mappedBy = "alumno")
+    @OneToMany(mappedBy = "alumno", cascade = CascadeType.REMOVE)
     @JsonManagedReference("alumno-reservas")
     @JsonIgnore
     private List<Reserva> reservasRealizadas = new ArrayList<>();
 
-    @OneToMany(mappedBy = "propietario", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "propietario", cascade = CascadeType.REMOVE)
     @JsonManagedReference("propietario-reservas")
     @JsonIgnore
     private List<Reserva> reservasComoPropietario = new ArrayList<>();

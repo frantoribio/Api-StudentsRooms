@@ -44,7 +44,7 @@ public class Habitacion {
     @JoinColumn(name = "propietario_id", nullable = false)
     private Usuario propietario;
 
-    @OneToMany(mappedBy = "habitacion")
+    @OneToMany(mappedBy = "habitacion",cascade = CascadeType.REMOVE)
     @JsonBackReference
     private List<Reserva> reservas = new ArrayList<>();
 

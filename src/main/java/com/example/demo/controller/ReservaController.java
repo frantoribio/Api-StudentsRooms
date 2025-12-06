@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.security.core.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,5 +96,13 @@ public class ReservaController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/habitacion/{id}")
+    public ResponseEntity<List<ReservaDTO>> obtenerReservasPorHabitacion(@PathVariable UUID id) {
+        List<ReservaDTO> reservas = reservaService.obtenerReservasPorHabitacion(id);
+        if (reservas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(reservas);
+    }
 
 }
