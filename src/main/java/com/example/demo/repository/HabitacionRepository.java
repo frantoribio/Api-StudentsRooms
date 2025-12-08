@@ -13,6 +13,8 @@ public interface HabitacionRepository extends JpaRepository<Habitacion, UUID> {
 
     List<Habitacion> findByPropietarioId(UUID propietarioId);
     // Agregar métodos personalizados aquí si es necesario   
+
+    
 }
 
 

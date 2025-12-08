@@ -51,6 +51,7 @@ public class SecurityConfig {
                 .requestMatchers("/imagenes/**").permitAll()
                 .requestMatchers("/api/usuarios/registro").permitAll()
                 .requestMatchers("/api/usuarios/**").hasRole("ADMIN")
+                .requestMatchers("/api/reservas/").hasRole("ADMIN")
                 .requestMatchers("/public/uploads/photos").permitAll()
                 .requestMatchers(
                     "/swagger-ui/**",
@@ -63,7 +64,7 @@ public class SecurityConfig {
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
             //.oauth2ResourceServer(oauth2 -> oauth2
-            //    .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
+            // .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
 
         return http.build();
     }
@@ -94,6 +95,7 @@ public class SecurityConfig {
             }
             return List.of();
         });
+        
         return converter;
     }
 

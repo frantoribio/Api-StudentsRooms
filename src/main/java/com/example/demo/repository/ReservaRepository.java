@@ -15,5 +15,4 @@ public interface ReservaRepository extends JpaRepository<Reserva, UUID> {
     List<Reserva> findByPropietarioId(UUID propietarioId);
     List<Reserva> findByHabitacionId(UUID habitacionId);
 
-
 }

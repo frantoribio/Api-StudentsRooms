@@ -4,7 +4,6 @@ import com.example.demo.dto.ReservaDTO;
 import com.example.demo.model.Reserva;
 import com.example.demo.repository.ReservaRepository;
 import com.example.demo.repository.UsuarioRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -19,8 +18,14 @@ public class ReservaService {
 
     @Autowired
     private ReservaRepository reservaRepository;
+   
+    
 
 
+    public List<ReservaDTO> listarReservas() {
+        List<Reserva> reservas = reservaRepository.findAll();
+        return reservas.stream().map(ReservaMapper::toDTO).toList();
+    }
 
     public ReservaService(ReservaRepository reservaRepository, ReservaMapper reservaMapper, UsuarioRepository usuarioRepository) {
         this.reservaRepository = reservaRepository;
@@ -56,5 +61,31 @@ public class ReservaService {
                 .toList();
     }
 
-}
+    public List<ReservaDTO> obtenerReservasPorUsuario(UUID usuarioId){
+        return reservaRepository.findByAlumnoId(usuarioId).stream()
+                .map(ReservaMapper::toDTO)
+                .toList();
+    }
 
+    public ReservaDTO toDTO(Reserva reserva) {
+
+        ReservaDTO dto = new ReservaDTO();
+        dto.setId(reserva.getId());
+        dto.setHabitacionId(reserva.getHabitacion().getId());
+        dto.setAlumnoEmail(reserva.getAlumno() != null ? reserva.getAlumno().getEmail() : null);
+        dto.setPropietarioEmail(reserva.getPropietario() != null ? reserva.getPropietario().getEmail() : null);
+        dto.setFechaInicio(reserva.getFechaInicio());
+        dto.setFechaFin(reserva.getFechaFin());
+        dto.setEstadoReserva(reserva.getEstadoReserva());
+
+        return dto;
+    }
+
+    public Optional<ReservaDTO> findDTOById(UUID id) {
+        return reservaRepository.findById(id)
+                .map(this::toDTO);
+    }
+
+    
+
+}

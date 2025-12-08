@@ -1,0 +1,23 @@
+
+
+
+Abrir la carpeta y ejecutar start_app si tienes Docker Desktop abierto, si no, hay que seguir estos pasos:
+
+1º Tener Docker Desktop instalado y corriendo. Ya se podría ejecutar start.app.
+
+Si no quieres ejecutar el start_app.bat:
+
+2º Abrir un terminal en el directorio donde está el docker-compose y escribir docker-compose up --build
+3º Abrir otro terminal en el directorio donde está demo-0.0.1-SNAPSHOT.jar y escribir java -jar .\demo-0.0.1-SNAPSHOT.jar
+
+Cuando esté corriendo Docker con la base de datos y la API:
+
+4º Abrir un emulador en Android Studio y arrastrar el app-debug.apk
+5º Descargar imágenes desde internet con tamaño inferior a 1Mb en el emulador para poder cargarlas en la aplicación Android ( https://www.pexels.com/es-es/buscar/habitaci%C3%B3n/ ).
+6º Probar la aplicación creando usuarios.
+7º Logarse como administrador: Usuario > admin@alquilerapp.com Contraseña > admin123
+
+Enlaces a los repositorios con el código:
+
+API SPRING: https://github.com/frantoribio/Api-StudentsRooms
+APP ANDROID: https://github.com/frantoribio/Alquilerapp-compose-StudentsRooms

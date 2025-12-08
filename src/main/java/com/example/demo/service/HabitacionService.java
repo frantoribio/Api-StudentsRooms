@@ -23,7 +23,6 @@ public class HabitacionService {
     @Autowired
     private HabitacionRepository habitacionRepository;
     
-    // Inyectamos el nuevo Mapper
     @Autowired
     private HabitacionMapper habitacionMapper; 
 

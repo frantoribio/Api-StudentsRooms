@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.demo.dto.ReservaDTO;
 import com.example.demo.model.Reserva;
 import com.example.demo.model.Usuario;
@@ -53,26 +52,24 @@ public class ReservaController {
 
    @GetMapping("/{id}")
     public ResponseEntity<ReservaDTO> getReservaById(@PathVariable UUID id) {
-        return reservaService.findById(id)
-                .map(reserva -> ResponseEntity.ok(reservaService.findAllDTO()
-                        .stream()
-                        .filter(dto -> dto.getId().equals(id))
-                        .findFirst()
-                        .orElse(null)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return reservaService.findDTOById(id)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
+
     }
 
     @PostMapping
-    public Reserva crearReserva(@RequestBody Reserva reserva, Authentication authentication) {
+    public ResponseEntity<ReservaDTO> crearReserva(@RequestBody Reserva reserva, Authentication authentication) {
         String username = authentication.getName();
         Optional<Usuario> usuarioOpt = usuarioService.findByEmail(username);
-        reserva.setAlumno(usuarioOpt.orElse(null));
+        reserva.setAlumno(usuarioOpt.orElseThrow(() -> new RuntimeException("Usuario no encontrado")));
         logger.info("POST /api/reservas - creando reserva para usuario: " + username);
-        return reservaService.save(reserva);
+        Reserva nuevaReserva = reservaService.save(reserva);
+        return ResponseEntity.ok(reservaService.toDTO(nuevaReserva));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Reserva> updateReserva(@PathVariable UUID id, @RequestBody Reserva reservaDetails) {
+    public ResponseEntity<ReservaDTO> updateReserva(@PathVariable UUID id, @RequestBody Reserva reservaDetails) {
         return reservaService.findById(id)
                 .map(reserva -> {
                     reserva.setAlumno(reservaDetails.getAlumno());
@@ -80,7 +77,7 @@ public class ReservaController {
                     reserva.setFechaFin(reservaDetails.getFechaFin());
                     reserva.setEstadoReserva(reservaDetails.getEstadoReserva());
                     logger.info("PUT /api/reservas/" + id + " - actualizando reserva");
-                    return ResponseEntity.ok(reservaService.save(reserva));
+                    return ResponseEntity.ok(reservaService.toDTO(reservaDetails));
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -102,6 +99,18 @@ public class ReservaController {
         if (reservas.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
+        return ResponseEntity.ok(reservas);
+    }
+
+    @GetMapping("/usuario{id}")
+    public ResponseEntity<List<ReservaDTO>> obtenerReservasPorUsuario(@PathVariable UUID id) {
+        List<ReservaDTO> reservas = reservaService.obtenerReservasPorUsuario(id);
+        if (reservas.isEmpty()) {
+            logger.info("Usuario con id {} no tiene reservas.", id);
+            return ResponseEntity.noContent().build();
+            
+        }
+        logger.info("Usuario con id {} tiene {} reservas: {}", id, reservas.size(), reservas);
         return ResponseEntity.ok(reservas);
     }
 
