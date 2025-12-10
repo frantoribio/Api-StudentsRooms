@@ -51,13 +51,15 @@ public class SecurityConfig {
                 .requestMatchers("/imagenes/**").permitAll()
                 .requestMatchers("/api/usuarios/registro").permitAll()
                 .requestMatchers("/api/usuarios/**").hasRole("ADMIN")
-                .requestMatchers("/api/reservas/").hasRole("ADMIN")
+                .requestMatchers("/api/reservas/").hasAnyRole("ADMIN","ALUMNO")
+                .requestMatchers("/api/reservas/usuario/**").hasAnyRole("ADMIN", "ALUMNO")
                 .requestMatchers("/public/uploads/photos").permitAll()
                 .requestMatchers(
                     "/swagger-ui/**",
                     "/v3/api-docs/**",
                     "/v3/api-docs.yaml"
                 ).permitAll()
+            
                 .anyRequest().authenticated()
             )
             .csrf(csrf -> csrf.disable())
